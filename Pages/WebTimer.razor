@@ -1,0 +1,49 @@
+@page "/webtimer"
+
+<PageTitle>Web Timer</PageTitle>
+
+<h1>Test Web Timer</h1>
+
+@if (seconds == null) {
+
+    <p>
+        Loading...
+    </p>
+
+}
+else
+{
+    <p>
+        <b>TIMER:</b> @minutes minutes and @seconds seconds
+    </p>
+}
+
+@code {
+
+    // Variables
+    int seconds = 0;
+    int minutes = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Timer timer = new Timer(1000);
+        timer.Elapsed += NewTick;
+        timer.Enabled = true;
+    }
+
+    private void NewTick(Object source, ElapsedEventArgs e)
+    {
+        if (seconds < 59) 
+        {
+            seconds += 1;
+            InvokeAsync(StateHasChanged);
+        }
+        else
+        {
+            seconds = 0;
+            minutes += 1;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+}
